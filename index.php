@@ -1,75 +1,109 @@
+
+<style>
+    body {
+        margin:0 10%;
+        font-weight:600;
+    }
+    form > div {
+        margin-bottom: 1rem;
+    }
+    p {
+        margin-bottom: 1rem;
+    }
+    .input-name {
+        height:50px;
+    }
+    #thread_div > div {
+        border-bottom:1px solid #000;
+        margin:30px 0;
+    }
+</style>
+
 <html>
-<head><title>掲示板</title></head>
-<body>
+    <head>
+        <title>掲示板App.verもぐお</title>
+    </head>
+    <body>
+        <h1>掲示板App.verもぐお</h1>
+        <div id="input_form">
+            <h2>投稿フォーム</h2>
+            
+            <form method="POST" action="index.php">
+                <!---<input type="hidden" name="noMultiple" value="<?php echo $rnd; ?>">--->
+                <div>
+                    <input class="input-name" type="text" name="name" placeholder="名前" required>
+                </div>
+                <div>
+                    <textarea class="input-contents" name="contents" cols="40" rows="8" placeholder="内容" required></textarea>
+                </div>
+                <div>
+                    <input type="submit" name="submitBtn" value="投稿する">
+                </div>
+            </form>
+            <form method="POST" action="index.php">
+                <div>
+                    <input type="submit" name="deleteBtn" value="削除する">
+                </div>
+            </form>
+        </div>
+        <div id="thread">
+            <h2>スレッド</h2>
+            <?php
+                ////session_start();
+                
+                //受け取ったポインタに入力情報、投稿日時をテキストファイルに書き込み後、fclose
+                function inputValue($fp, $name, $contents, $time) {
+                    $inputValue = 
+                    "<div><p>投稿日時:${time}</p><p>投稿者：${name}</p><p>内容:<br />${contents}<p></div>\n";
+                    fwrite($fp, "${inputValue}");
+                    fclose($fp);
+                    //リロードで重複投稿されてしまう対策
+                    $redirect_url = $_SERVER['HTTP_REFERER'];
+                    header("Location: $redirect_url");
+                    exit;
+                }
+                //受け取ったポインタのファイルを1行読み込み、画面に表示をファイルの終端までループ、その後、fclose
+                function outputValue($fp) {
+                    echo "<div id='thread_div'>";
+                    while(!feof($fp)){
+                        $str = fgets($fp);
+                        echo "${str}";
+                    }
+                    fclose($fp);
+                    echo "</div>";
+                }
+                //削除ボタンを押したら、test.txtの中身を空にする。
+                //削除ボタンでなければ、投稿する。
+                if( isset($_POST['deleteBtn'])){
+                    $fpD = fopen('test.txt',"w");
+                    fclose($fpD);
+                } else {
+                    //各情報をPOSTで変数に格納
+                    $inputName = $_POST['name'];
+                    $inputContents = $_POST['contents'];
 
-<h1>掲示板App</h1>
+                    //投稿日時を取得
+                    $inputTime = date("Y/m/d H:i:s");
+                    
+                    ////if ($_REQUEST["noMultiple"] == $_SESSION["noMultiple"]){
+                        $fp = fopen("test.txt", "a");
+                        inputValue($fp, $inputName, $inputContents, $inputTime);    
+                    ////}else{
+                        // echo $_REQUEST["noMultiple"];
+                        // echo "<br>";
+                        // echo $_SESSION["noMultiple"];
+                    ////}
+                    
+                    $fpR = fopen("test.txt", "r");
+                    outputValue($fpR);
 
-<h2>投稿フォーム</h2>
-
-<form method="POST" action="<?php print($_SERVER['PHP_SELF']) ?>">
-    <input type="text" name="personal_name" placeholder="名前" required><br><br>
-    <textarea name="contents" rows="8" cols="40" placeholder="内容" required>
-</textarea><br><br>
-    <input type="submit" name="btn" value="投稿する">
-</form>
-
-<h2>スレッド</h2>
-
-<?php
-
-const THREAD_FILE = 'thread.txt';
-
-function readData() {
-    // ファイルが存在しなければデフォルト空文字のファイルを作成する
-    if (! file_exists(THREAD_FILE)) {
-        $fp = fopen(THREAD_FILE, 'w');
-        fwrite($fp, '');
-        fclose($fp);
-    }
-
-    $thread_text = file_get_contents(THREAD_FILE);
-    echo $thread_text;
-}
-
-function writeData() {
-    $personal_name = $_POST['personal_name'];
-    $contents = $_POST['contents'];
-    $contents = nl2br($contents);
-
-    $data = "<hr>\n";
-    $data = $data."<p>投稿者:".$personal_name."</p>\n";
-    $data = $data."<p>内容:</p>\n";
-    $data = $data."<p>".$contents."</p>\n";
-
-    $fp = fopen(THREAD_FILE, 'a');
-
-    if ($fp){
-        if (flock($fp, LOCK_EX)){
-            if (fwrite($fp,  $data) === FALSE){
-                print('ファイル書き込みに失敗しました');
-            }
-
-            flock($fp, LOCK_UN);
-        }else{
-            print('ファイルロックに失敗しました');
-        }
-    }
-
-    fclose($fp);
-
-    // ブラウザのリロード対策
-    $redirect_url = $_SERVER['HTTP_REFERER'];
-    header("Location: $redirect_url");
-    exit;
-}
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    writeData();
-}
-
-readData();
-
-?>
-
-</body>
+                    
+                }
+                ////echo $_SESSION["noMultiple"];
+                ////echo $_REQUEST["noMultiple"];
+                ////$_SESSION["noMultiple"] = $rnd = mt_rand();
+                ////echo $rnd;
+            ?>
+        </div>
+    </body>
 </html>
