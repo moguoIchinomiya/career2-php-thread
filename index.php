@@ -49,7 +49,6 @@
         <div id="thread">
             <h2>スレッド</h2>
             <?php
-                ////session_start();
                 
                 //受け取ったポインタに入力情報、投稿日時をテキストファイルに書き込み後、fclose
                 function inputValue($fp, $name, $contents, $time) {
@@ -57,7 +56,6 @@
                     "<div><p>投稿日時:${time}</p><p>投稿者：${name}</p><p>内容:<br />${contents}<p></div>\n";
                     fwrite($fp, "${inputValue}");
                     fclose($fp);
-                    //リロードで重複投稿されてしまう対策
                     $redirect_url = $_SERVER['HTTP_REFERER'];
                     header("Location: $redirect_url");
                     exit;
@@ -77,7 +75,7 @@
                 if( isset($_POST['deleteBtn'])){
                     $fpD = fopen('test.txt',"w");
                     fclose($fpD);
-                } else {
+                } else if ( isset($_POST['submitBtn'])) {
                     //各情報をPOSTで変数に格納
                     $inputName = $_POST['name'];
                     $inputContents = $_POST['contents'];
@@ -85,24 +83,14 @@
                     //投稿日時を取得
                     $inputTime = date("Y/m/d H:i:s");
                     
-                    ////if ($_REQUEST["noMultiple"] == $_SESSION["noMultiple"]){
-                        $fp = fopen("test.txt", "a");
-                        inputValue($fp, $inputName, $inputContents, $inputTime);    
-                    ////}else{
-                        // echo $_REQUEST["noMultiple"];
-                        // echo "<br>";
-                        // echo $_SESSION["noMultiple"];
-                    ////}
-                    
+                    $fp = fopen("test.txt", "a");
+                    inputValue($fp, $inputName, $inputContents, $inputTime);                       
+                } else {
+                    echo "aaa";
                     $fpR = fopen("test.txt", "r");
-                    outputValue($fpR);
-
-                    
+                    outputValue($fpR); 
                 }
-                ////echo $_SESSION["noMultiple"];
-                ////echo $_REQUEST["noMultiple"];
-                ////$_SESSION["noMultiple"] = $rnd = mt_rand();
-                ////echo $rnd;
+
             ?>
         </div>
     </body>
