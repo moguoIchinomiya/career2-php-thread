@@ -24,16 +24,31 @@
     .input_name, .input_contents, .submit_btn, .delete_btn {
         width:100%;
     }
+    .div_button {
+        padding:0 25%;
+    }
     .submit_btn, .delete_btn {
-        height:40px;
+        height:60px;
+        color:#fff;
+        font-weight:600;
+        font-size:1.2em;
+    }
+    .submit_btn {
+        background-color:#832;
+    }
+    .delete_btn {
+        background-color:#111;
     }
     .input_name {
         height:50px;
     }
     .input_contents{
     }
+    
     .submit_btn {
-
+        font-weight:600;
+        color:#fff;
+        background-color:#3AB;
     }
     @media(max-width){
 
@@ -43,28 +58,7 @@
 <html>
     <head>
         <title>掲示板App.verもぐお</title>
-        <!-- <meta name="viewport" content="width=768px">
-        <meta name="viewport" content="width=568px"> -->
-        <meta name="viewport" content="width=376px">
-        <?php
-        // function deviceCheck (){
-        //     //特定の処理をしたい端末の種類のリスト
-        //     $mobile_list = array('iPhone','iPad','iPod','Android');
-
-        //     //スーパーグローバル変数にアクセスし、端末の情報を取得
-        //     $device = $_SERVER['HTTP_USER_AGEMT'];
-
-        //     foreach ($mobile_list as $device_check){
-        //         if(strpos($device, $device_check) != false ){
-        //             return true;
-        //         }
-        //     }
-        //     return false;
-        // }
-        // if (deviceCheck() == true) {
-        //     echo '<meta name="viewport" content="width=376px">';
-        // }
-        ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     </head>
     <body>
         <h1>掲示板App.verもぐお</h1>
@@ -79,13 +73,13 @@
                 <div>
                     <textarea class="input_contents" name="contents" rows="8" placeholder="投稿内容" required></textarea>
                 </div>
-                <div>
-                    <input class="submit_btn" type="submit" name="submitBtn" value="投稿する">
+                <div class="div_button">
+                    <input class="submit_btn" type="submit" name="submitBtn" value="投稿">
                 </div>
             </form>
             <form method="POST" action="index.php">
-                <div>
-                    <input class="delete_btn" type="submit" name="deleteBtn" value="削除する">
+                <div class="div_button">
+                    <input class="delete_btn" type="submit" name="deleteBtn" value="全削除">
                 </div>
             </form>
         </div>
