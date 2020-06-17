@@ -1,18 +1,25 @@
 
 <style>
-    #thread_div > div {
-        border-bottom:1px solid #000;
-        margin:30px 0;
+    h1 {
+        margin-top:50px;
+        font-size:1.8em;
     }
     body {
         margin:0 10%;
         font-weight:600;
     }
+    p {
+        margin-bottom: 1rem;
+    }
     form > div {
         margin-bottom: 1rem;
     }
-    p {
-        margin-bottom: 1rem;
+    #thread {
+        margin-top:70px;
+    }
+    #thread_div > div {
+        border-bottom:1px solid #000;
+        margin:30px 0;
     }
     .input_name, .input_contents, .submit_btn, .delete_btn {
         width:100%;
@@ -28,16 +35,36 @@
     .submit_btn {
 
     }
+    @media(max-width){
 
+    }
 </style>
 
 <html>
     <head>
         <title>掲示板App.verもぐお</title>
-        <meta name="viewport" content="width=768px">
-        <meta name="viewport" content="width=568px">
+        <!-- <meta name="viewport" content="width=768px">
+        <meta name="viewport" content="width=568px"> -->
         <meta name="viewport" content="width=376px">
+        <?php
+        // function deviceCheck (){
+        //     //特定の処理をしたい端末の種類のリスト
+        //     $mobile_list = array('iPhone','iPad','iPod','Android');
 
+        //     //スーパーグローバル変数にアクセスし、端末の情報を取得
+        //     $device = $_SERVER['HTTP_USER_AGEMT'];
+
+        //     foreach ($mobile_list as $device_check){
+        //         if(strpos($device, $device_check) != false ){
+        //             return true;
+        //         }
+        //     }
+        //     return false;
+        // }
+        // if (deviceCheck() == true) {
+        //     echo '<meta name="viewport" content="width=376px">';
+        // }
+        ?>
     </head>
     <body>
         <h1>掲示板App.verもぐお</h1>
@@ -76,7 +103,7 @@
                 //受け取ったポインタに入力情報、投稿日時をテキストファイルに書き込み後、fclose
                 function inputValue($fp, $name, $contents, $time) {
                     $inputValue = 
-                    "<div><p>投稿日時:${time}</p><p>投稿者：${name}</p><p>内容:<br />${contents}<p></div>\n";
+                    "<div><p>投稿日時:${time}</p><p>投稿者：${name}</p><p>${contents}<p></div>\n";
                     fwrite($fp, "${inputValue}");
                     fclose($fp);
                     $redirect_url = $_SERVER['HTTP_REFERER'];
@@ -105,6 +132,9 @@
                     //各情報をPOSTで変数に格納
                     $inputName = $_POST['name'];
                     $inputContents = $_POST['contents'];
+
+                    //改行コードを<br>に変換
+                    $inputContents = nl2br($inputContents);
 
                     //投稿日時を取得
                     $inputTime = date("Y/m/d H:i:s");
