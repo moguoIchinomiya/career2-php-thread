@@ -44,12 +44,6 @@
     }
     .input_contents{
     }
-    
-    .submit_btn {
-        font-weight:600;
-        color:#fff;
-        background-color:#3AB;
-    }
     @media(max-width){
 
     }
