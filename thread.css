@@ -1,0 +1,50 @@
+h1 {
+    margin-top:50px;
+    font-size:1.8em;
+}
+body {
+    margin:0 10%;
+    font-weight:600;
+}
+p {
+    margin-bottom: 1rem;
+}
+form > div {
+    margin-bottom: 1rem;
+}
+#thread {
+    margin-top:70px;
+}
+#thread_div {
+    border-bottom:1px solid #000;
+}
+#thread_div > div {
+    margin:30px 0;
+}
+
+.input_name, .input_contents, .submit_btn, .delete_btn {
+    width:100%;
+}
+.div_button {
+    padding:0 25%;
+}
+.submit_btn, .delete_btn {
+    height:60px;
+    color:#fff;
+    font-weight:600;
+    font-size:1.2em;
+}
+.submit_btn {
+    background-color:#832;
+}
+.delete_btn {
+    background-color:#111;
+}
+.input_name {
+    height:50px;
+}
+.input_contents{
+}
+@media(max-width){
+
+}
